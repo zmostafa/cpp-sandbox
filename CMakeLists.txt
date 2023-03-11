@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16...3.23)
 
 # Not ideal to use this global variable, but necessary to make sure
 # that tooling and projects use the same version
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 14)
 
 # strongly encouraged to enable this globally to avoid conflicts between
 # -Wpedantic being enabled and -std=c++20 and -std=gnu++20 for example
@@ -33,9 +33,9 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 
 # Set the project name and language
 project(
-  myproject
+  cpp-sandbox
   VERSION 0.0.1
-  DESCRIPTION ""
+  DESCRIPTION "CPP Sandbox project, learning language syntax"
   HOMEPAGE_URL "%%myurl%%"
   LANGUAGES CXX C)
 
@@ -103,7 +103,7 @@ dynamic_project_options(
   PCH_HEADERS
   <vector>
   <string> # This is a list of headers to pre-compile, here are some common ones
-  ENABLE_CONAN
+  # ENABLE_CONAN
   # CONAN_OPTIONS    # Extra options to pass to conan
   # MSVC_WARNINGS    # Override the defaults for the MSVC warnings
   # CLANG_WARNINGS   # Override the defaults for the CLANG warnings
