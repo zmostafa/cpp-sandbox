@@ -1,6 +1,6 @@
 # option(CPP_SANDBOX_TARGETNAME"Enable compilation of TARGETNAME" ON)
 option(CPP_SANDBOX_CONTAINERS "Enable compilation of Containers" OFF)
-option(CPP_SANDBOX_CONCURRENCY_IN_ACTION "Enable compilation of Containers" ON)
+option(CPP_SANDBOX_CONCURRENCY_IN_ACTION "Enable compilation of Concurrency in Action Book" ON)
 
 # SOLID Principles
 if(CPP_SANDBOX_CONTAINERS)
