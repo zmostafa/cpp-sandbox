@@ -1,5 +1,6 @@
 # option(CPP_SANDBOX_TARGETNAME"Enable compilation of TARGETNAME" ON)
-option(CPP_SANDBOX_CONTAINERS "Enable compilation of Containers" ON)
+option(CPP_SANDBOX_CONTAINERS "Enable compilation of Containers" OFF)
+option(CPP_SANDBOX_CONCURRENCY_IN_ACTION "Enable compilation of Containers" ON)
 
 # SOLID Principles
 if(CPP_SANDBOX_CONTAINERS)
@@ -9,7 +10,7 @@ if(CPP_SANDBOX_CONTAINERS)
   # add_subdirectory()
 endif()
 # Concurrency In Action Book
-if(CPP_SANDBOX_CONCURRENCY_IN_ACTIONmessage("Building Container folder")
+if(CPP_SANDBOX_CONCURRENCY_IN_ACTION)
   message("Building Concurren in action folder") 
   add_subdirectory(concurrency-in-action)
   # add_subdirectory()
