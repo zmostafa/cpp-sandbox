@@ -11,6 +11,6 @@ if(CPP_SANDBOX_CONTAINERS)
 endif()
 # Concurrency In Action Book
 if(CPP_SANDBOX_CONCURRENCY_IN_ACTION)
-  message("Building Concurren in action folder") 
+  message("Building Concurrency in Action folder") 
   add_subdirectory(concurrency-in-action)
 endif()
