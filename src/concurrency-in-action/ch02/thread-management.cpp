@@ -1,5 +1,8 @@
+#include <algorithm>
 #include <cassert>
+#include <functional>
 #include <iostream>
+#include <stdexcept>
 #include <thread>
 
 // Basic thread creation
@@ -132,4 +135,82 @@ void oops(int some_param)
   // solution, no implicit conversion
   std::thread t1(f, 3, std::string(buffer));
   t.detach();
+}
+
+void update_data_for_widget(widget_id w, widget_data &data);
+void oops_again(widget_id w)
+{
+  widget_data data;
+  // data is copied to thread, not passed by reference
+  std::thread t(update_data_for_widget, w, data);
+  // solution
+  std::thread t1(update_data_for_widget, w, std::ref(data));
+  display_status();
+  t.join();
+  process_widget_data(data);
+}
+
+// Arguments can't be copied, but moved
+class big_object
+{
+  void prepare_data(int &i);
+};
+void process_big_object(std::unique_ptr<big_object>);
+std::unique_ptr<big_object> p(new big_object);
+p->prepare_data(42);
+std::thread t_with_moved_pointer(process_big_object, std::move(p));
+
+void some_function();
+void some_other_function();
+std::thread t1(some_function);// ok
+std::thread t2 = std::move(t1);// ok, t1 is not attached to a thread
+t1 = std::thread(some_other_function);// ok, t1 can be assigned to a thread
+std::thread t3;
+t3 = std::move(t2);// ok, t2 is not assigned to a thread
+t1 = std::move(t3);// not ok, t1 is already associated with a thread, std::terminate will be called
+
+// Returning a std::thread from a function
+std::thread f_return_thread()
+{
+  void some_function();
+  return std::thread(some_function);
+}
+std::thread g_return_thread()
+{
+  void some_other_function(int);
+  std::thread t(some_other_function, 42);
+  return t;
+}
+
+// move thread ownership to a function
+void f(std::thread t);
+void g()
+{
+  void some_other_function();
+  f(std::thread(some_other_function));
+  std::thread t(some_function);
+  f(std::move(t));
+}
+
+// Scoped thread
+class scoped_thread
+{
+  std::thread t;
+
+public:
+  explicit scoped_thread(std::thread t_) : t(std::move(t_))
+  {
+    if (!t.joinable()) { throw std::logic_error("No Thread"); }
+  }
+  ~scoped_thread() { t.join(); }
+
+  scoped_thread(scoped_thread const &) = delete;
+  scoped_thread operator=(scoped_thread const &) = delete;
+};
+struct func;
+void f()
+{
+  int some_local_state = 0;
+  scoped_thread t{ std::thread(func(some_local_state)) };
+  do_somthing();
 }
