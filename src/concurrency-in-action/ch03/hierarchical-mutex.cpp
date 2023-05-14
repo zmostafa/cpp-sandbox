@@ -5,8 +5,8 @@ class hierarchical_mutex
 {
   std::mutex internal_mutex;
   unsigned long const hierarchy_value;
-  unsigned long previous_hierarchy_value; // NOLINT
-  static thread_local unsigned long this_thread_hirearchy_value; // NOLINT
+  unsigned long previous_hierarchy_value;// NOLINT
+  static thread_local unsigned long this_thread_hirearchy_value;// NOLINT
 
   void check_for_hierarchy_violationn() const
   {
@@ -45,4 +45,39 @@ public:
   }
 };
 
-thread_local unsigned long hierarchical_mutex::this_thread_hirearchy_value(ULONG_MAX); // NOLINT
+thread_local unsigned long hierarchical_mutex::this_thread_hirearchy_value(ULONG_MAX);// NOLINT
+
+
+// Sample code that usese hierarchical_mutex
+
+hierarchical_mutex high_level_mutex(10000);
+hierarchical_mutex low_level_mutex(5000);
+hierarchical_mutex other_mutex(6000);
+
+int do_low_level_stuff();
+int low_level_func()
+{
+  std::lock_guard<hierarchical_mutex> lk(low_level_mutex);
+  return do_low_level_stuff();
+}
+
+void high_level_stuff(int some_param);
+void high_level_func()
+{
+  std::lock_guard<hierarchical_mutex> lk(high_level_mutex);
+  high_level_stuff(low_level_func());
+}
+
+void thread_a() { high_level_func(); }
+
+void do_other_stuff();
+void other_stuff()
+{
+  high_level_func();
+  do_other_stuff();
+}
+void thread_b()
+{
+  std::lock_guard<hierarchical_mutex> lk(other_mutex);
+  other_stuff();
+}
