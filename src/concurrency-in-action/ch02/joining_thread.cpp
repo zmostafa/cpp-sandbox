@@ -14,7 +14,7 @@ public:
   explicit joining_thread(Callable &&func, Args &&...args)
     : t(std::forward<Callable>(func), std::forward<Args>(args)...)
   {}
-  explicit joining_thread(std::thread _t) noexcept : t(std::move(_t)) {}
+  explicit joining_thread(std::thread _thread) noexcept : t(std::move(_thread)) {}
 
   joining_thread(joining_thread &&other) noexcept : t(std::move(other.t)) {}
   joining_thread &operator=(joining_thread &&other) noexcept
@@ -37,12 +37,12 @@ public:
   joining_thread operator=(joining_thread const &) = delete;
 
   void swap(joining_thread &other) noexcept { t.swap(other.t); }
-  std::thread::id get_id() const noexcept { return t.get_id(); }
-  bool joinable() const noexcept { return t.joinable(); }
+  [[nodiscard]] std::thread::id get_id() const noexcept { return t.get_id(); }
+  [[nodiscard]] bool joinable() const noexcept { return t.joinable(); }
   void join() { t.join(); }
   void detach() { t.detach(); }
   std::thread &as_thread() noexcept { return t; }
-  const std::thread &as_thread() const noexcept { return t; }
+  [[nodiscard]] const std::thread &as_thread() const noexcept { return t; }
 
 private:
   std::thread t;
