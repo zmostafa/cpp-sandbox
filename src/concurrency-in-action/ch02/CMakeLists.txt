@@ -18,3 +18,13 @@ target_link_libraries(
 
 target_include_directories(joining_thread PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
 
+add_library(naive-accumulate naive-accumulate.cpp)
+
+target_link_libraries(
+  naive-accumulate
+  PRIVATE cpp-sandbox::project_options
+          cpp-sandbox::project_warnings
+  )
+
+target_include_directories(naive-accumulate PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
+
