@@ -18,13 +18,23 @@
 #
 # target_include_directories(protecting-data PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
 
-add_library(threadsafe-stack threadsafe-stack.cpp)
+# add_library(threadsafe-stack threadsafe-stack.cpp)
+#
+# target_link_libraries(
+#   threadsafe-stack
+#   PRIVATE cpp-sandbox::project_options
+#           cpp-sandbox::project_warnings
+#   )
+#
+# target_include_directories(threadsafe-stack PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
+
+add_library(hierarchical-mutex hierarchical-mutex.cpp)
 
 target_link_libraries(
-  threadsafe-stack
+  hierarchical-mutex
   PRIVATE cpp-sandbox::project_options
           cpp-sandbox::project_warnings
   )
 
-target_include_directories(threadsafe-stack PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
+target_include_directories(hierarchical-mutex PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
 
