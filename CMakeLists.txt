@@ -27,6 +27,8 @@ FetchContent_Declare(_project_options URL https://github.com/aminya/project_opti
 FetchContent_MakeAvailable(_project_options)
 include(${_project_options_SOURCE_DIR}/Index.cmake)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # uncomment to enable vcpkg:
 # # Setup vcpkg - should be called before defining project()
 # run_vcpkg()
